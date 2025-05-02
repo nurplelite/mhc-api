@@ -8,6 +8,12 @@
     },
     {
       "path": "./apps/mhc-api"
+    },
+    {
+      "path": "./libs/shared/storage"
+    },
+    {
+      "path": "./libs/shared/firestore"
     }
   ]
 }

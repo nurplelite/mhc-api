@@ -122,6 +122,18 @@ importers:
 
   apps/mhc-api-e2e: {}
 
+  libs/shared/firestore:
+    dependencies:
+      tslib:
+        specifier: ^2.3.0
+        version: 2.8.1
+
+  libs/shared/storage:
+    dependencies:
+      tslib:
+        specifier: ^2.3.0
+        version: 2.8.1
+
 packages:
 
   '@adobe/css-tools@4.3.3':
