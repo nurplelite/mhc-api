@@ -4,6 +4,12 @@
   "include": [],
   "references": [
     {
+      "path": "../../libs/shared/storage"
+    },
+    {
+      "path": "../../libs/shared/firestore"
+    },
+    {
       "path": "./tsconfig.app.json"
     },
     {

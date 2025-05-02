@@ -1,8 +1,9 @@
 import { Module } from '@nestjs/common';
+import { FirestoreService } from './firestore.service.js';
 
 @Module({
   controllers: [],
-  providers: [],
-  exports: [],
+  providers: [FirestoreService],
+  exports: [FirestoreService],
 })
-export class MhcApiFirestoreModule {}
+export class FirestoreModule {}

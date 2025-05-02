@@ -17,4 +17,12 @@ module.exports = {
       generatePackageJson: true,
     })
   ],
+  resolve: {
+    extensions: ['.ts', '.js'],
+    alias: {
+      '@mhc-api/firestore': path.resolve(__dirname, '../../libs/shared/firestore/src/index.ts'),
+      '@mhc-api/storage': path.resolve(__dirname, '../../libs/shared/storage/src/index.ts'),
+    },
+  }
 };
+
