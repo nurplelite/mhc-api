@@ -2,11 +2,19 @@ import { Firestore } from 'firebase-admin/firestore';
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { FirestoreModule } from '@shared/firestore';
-import { StorageModule } from '@shared/storage';
+import { FirestoreModule } from '@mhc-api/firestore';
+import { StorageModule } from '@mhc-api/storage';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
-  imports: [FirestoreModule, StorageModule],
+  imports: [
+    FirestoreModule,
+    StorageModule,
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: '.env',
+    }),
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
