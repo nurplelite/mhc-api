@@ -19,6 +19,12 @@ module.exports = {
       generatePackageJson: true,
     })
   ],
+  ignoreWarnings: [
+    {
+      module: /@google-cloud\/firestore/,
+      message: /Failed to parse source map/,
+    },
+  ],
   resolve: {
     extensions: ['.ts', '.js'],
     alias: {

@@ -2,7 +2,7 @@
   "extends": "../../../tsconfig.base.json",
   "compilerOptions": {
     "baseUrl": ".",
-    "rootDir": "src",
+    "rootDir": ".",
     "outDir": "../../../dist/libs/shared/firestore",
     "tsBuildInfoFile": "../../../libs/shared/firestore/dist/tsconfig.lib.tsbuildinfo",
     "composite": true,
