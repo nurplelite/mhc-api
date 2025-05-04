@@ -2,9 +2,6 @@ import { Injectable, Logger } from '@nestjs/common';
 import { Firestore } from '@google-cloud/firestore';
 import { ConfigService } from '@nestjs/config';
 
-@Injectable()
-export class StorageService {
-}
 
 @Injectable()
 export class FirestoreService {
