@@ -2,15 +2,14 @@ name: CI/CD for mhc-api
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
   pull_request:
-    branches:
-      - '**'
+    branches: ['**']
 
 jobs:
-  dev-build-test:
-    name: Build & Test (Development)
+  dev-pr-check:
+    name: Build & Test (Dev PR Check)
+    if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     environment: development
 
@@ -41,8 +40,7 @@ jobs:
 
   prod-deploy:
     name: Deploy to Production
-    needs: dev-build-test
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     runs-on: ubuntu-latest
     environment: production
 
