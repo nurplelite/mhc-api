@@ -3,21 +3,23 @@ import { Storage } from '@google-cloud/storage';
 import { ConfigService } from '@nestjs/config';
 import { GoogleAuth } from 'google-auth-library';
 
-@Injectable()
-export class FirestoreService {
-}
 
 @Injectable()
 export class StorageService {
   private readonly logger = new Logger();
+  private readonly publicBucket: any;
+  private readonly privateBucket: any;
   private bucket: any;
 
   constructor(config: ConfigService) {
-    const bucketName = config.get<string>("FIREBASE_STORAGE_BUCKET")
     const storage = new Storage()
 
-    this.bucket = storage.bucket(bucketName || '');
-    this.logger.debug('initialized with: ', bucketName, ' bucket:', this.bucket.name)
+    this.publicBucket = storage.bucket(config.get('FIREBASE_STORAGE_PUBLIC_BUCKET') ||'');
+    this.privateBucket = storage.bucket(config.get('FIREBASE_STORAGE_PRIVATE_BUCKET') ||'');
+    this.bucket = this.publicBucket;
+
+    this.logger.debug('initialized with: ', this.publicBucket.name, ' bucket:', this.bucket.name)
+    this.logger.debug('initialized with: ', this.privateBucket.name)
 
     const auth = new GoogleAuth();
     auth.getClient().then(client => {
@@ -32,7 +34,7 @@ export class StorageService {
 
   async onModuleInit(): Promise<void> {
     try {
-      const file = this.bucket.file('__ping.txt');
+      const file = this.bucket.file('__fake.txt');
       await file.save('ping', { resumable: false });
       this.logger.debug('✅ Cloud Storage connection verified via __ping.txt');
     } catch (err) {

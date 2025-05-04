@@ -1,0 +1,97 @@
+name: CI/CD for mhc-api
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - '**'
+
+jobs:
+  dev-build-test:
+    name: Build & Test (Development)
+    runs-on: ubuntu-latest
+    environment: development
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Install PNPM
+        run: npm install -g pnpm
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Lint
+        run: pnpm nx lint mhc-api
+
+      - name: Test
+        run: pnpm nx test mhc-api
+
+      - name: Build all dependencies
+        run: pnpm nx run-many --target=build --all --configuration=production
+
+
+  prod-deploy:
+    name: Deploy to Production
+    needs: dev-build-test
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Install PNPM
+        run: npm install -g pnpm
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Lint
+        run: pnpm nx lint mhc-api
+
+      - name: Test
+        run: pnpm nx test mhc-api
+
+      - name: Build all dependencies
+        run: pnpm nx run-many --target=build --all --configuration=production
+
+      - name: Authenticate to Google Cloud
+        run: |
+          echo "${{ secrets.GCP_SA_KEY }}" > ${HOME}/gcloud.json
+          gcloud auth activate-service-account --key-file=${HOME}/gcloud.json
+          gcloud config set project ${{ secrets.GCP_PROJECT }}
+          gcloud auth configure-docker ${{ secrets.GCP_REGION }}-docker.pkg.dev
+
+      - name: Docker Build
+        run: |
+          docker build -t ${{ secrets.GCP_REGION }}-docker.pkg.dev/${{ secrets.GCP_PROJECT }}/my-repo/mhc-api:latest apps/mhc-api
+
+      - name: Docker Push
+        run: |
+          docker push ${{ secrets.GCP_REGION }}-docker.pkg.dev/${{ secrets.GCP_PROJECT }}/my-repo/mhc-api:latest
+
+      - name: Deploy to VM via SSH
+        run: |
+          echo "${{ secrets.GCE_SSH_PRIVATE_KEY }}" > key.pem
+          chmod 600 key.pem
+          ssh -i key.pem -o StrictHostKeyChecking=no ${{ secrets.GCE_VM_USER }}@${{ secrets.GCE_VM_IP }} "\
+            docker pull ${{ secrets.GCP_REGION }}-docker.pkg.dev/${{ secrets.GCP_PROJECT }}/my-repo/mhc-api:latest && \
+            docker stop mhc-api || true && \
+            docker rm mhc-api || true && \
+            docker run -d --name mhc-api -p 3000:3000 ${{ secrets.GCP_REGION }}-docker.pkg.dev/${{ secrets.GCP_PROJECT }}/my-repo/mhc-api:latest \
+          "
