@@ -40,7 +40,7 @@ export class FirestoreService {
     return doc.exists ? doc.data() : null;
   }
 
-  async setDocument(collection: string, docId: string, data: any): Promise<void> {
-    await this.firestore.collection(collection).doc(docId).set(data, { merge: true });
+  async setDocument(collection: string, data: any): Promise<void> {
+    await this.firestore.collection(collection).doc().set(data, { merge: true })
   }
 }

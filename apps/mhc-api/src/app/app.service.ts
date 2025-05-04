@@ -13,8 +13,8 @@ export class AppService {
     return this.firestore.getDocument(collection, id);
   }
 
-  setDocument(collection: string, id: string, data: any) {
-    return this.firestore.setDocument(collection, id, data);
+  setDocument(collection: string, data: any) {
+    return this.firestore.setDocument(collection, data);
   }
 
   uploadFile(path: string, buffer: Buffer, contentType: string) {
