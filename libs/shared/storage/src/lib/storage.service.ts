@@ -34,7 +34,7 @@ export class StorageService {
 
   async onModuleInit(): Promise<void> {
     try {
-      const file = this.bucket.file('__fake.txt');
+      const file = this.bucket.file('__ping.txt');
       await file.save('ping', { resumable: false });
       this.logger.debug('✅ Cloud Storage connection verified via __ping.txt');
     } catch (err) {
