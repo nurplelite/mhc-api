@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
+import { StorageService } from './storage.service.js';
 
 @Module({
-  controllers: [],
-  providers: [],
-  exports: [],
+  providers: [StorageService],
+  exports: [StorageService],
 })
-export class MhcApiStorageModule {}
+export class StorageModule {}
