@@ -76,7 +76,7 @@ jobs:
 
       - name: Docker Build
         run: |
-          docker build -t ${{ secrets.GCP_REGION }}-docker.pkg.dev/${{ secrets.GCP_PROJECT }}/my-repo/mhc-api:latest \
+          docker build -t ${{ secrets.GCP_REGION }}-docker.pkg.dev/${{ secrets.GCP_PROJECT }}/mhc-api/mhc-api:latest \
             -f apps/mhc-api/Dockerfile .
 
 
