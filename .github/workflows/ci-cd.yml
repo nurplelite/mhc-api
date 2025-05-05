@@ -31,6 +31,9 @@ jobs:
       - name: Lint
         run: pnpm nx lint mhc-api
 
+      - name: Test
+        run: pnpm nx test mhc-api
+
       - name: Build all dependencies
         run: pnpm nx run-many --target=build --all --configuration=production
 
@@ -59,12 +62,17 @@ jobs:
       - name: Lint
         run: pnpm nx lint mhc-api
 
+      - name: Test
+        run: pnpm nx test mhc-api
+
       - name: Build all dependencies
         run: pnpm nx run-many --target=build --all --configuration=production
 
       - name: Authenticate to Google Cloud
         run: |
-          echo "${{ secrets.GCP_SA_KEY }}" > ${HOME}/gcloud.json
+          cat <<EOF > ${HOME}/gcloud.json
+          ${{ secrets.GCP_SA_KEY }}
+          EOF
           gcloud auth activate-service-account --key-file=${HOME}/gcloud.json
           gcloud config set project ${{ secrets.GCP_PROJECT }}
           gcloud auth configure-docker ${{ secrets.GCP_REGION }}-docker.pkg.dev
