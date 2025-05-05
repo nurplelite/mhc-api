@@ -94,4 +94,12 @@ jobs:
             docker pull ${{ secrets.GCP_REGION }}-docker.pkg.dev/${{ secrets.GCP_PROJECT }}/mhc-api/mhc-api:latest && \
             docker stop mhc-api || true && \
             docker rm mhc-api || true && \
-            docker run -d \ --name mhc-api \ -p 3000:3000 \ -e GOOGLE_CLOUD_PROJECT=${{ secrets.GOOGLE_CLOUD_PROJECT }} \ -e GOOGLE_CLOUD_DB=${{ secrets.GOOGLE_CLOUD_DB }} \ -e FIREBASE_STORAGE_PRIVATE_BUCKET=${{ secrets.FIREBASE_STORAGE_PRIVATE_BUCKET }} \ -e FIREBASE_STORAGE_PUBLIC_BUCKET=${{ secrets.FIREBASE_STORAGE_PUBLIC_BUCKET }} \ ${{ secrets.GCP_REGION }}-docker.pkg.dev/${{ secrets.GCP_PROJECT }}/mhc-api/mhc-api:latest"
+            docker run -d \
+              --name mhc-api \
+              -p 3000:3000 \
+              -e GOOGLE_CLOUD_PROJECT=${{ secrets.GOOGLE_CLOUD_PROJECT }} \
+              -e GOOGLE_CLOUD_DB=${{ secrets.GOOGLE_CLOUD_DB }} \
+              -e FIREBASE_STORAGE_PRIVATE_BUCKET=${{ secrets.FIREBASE_STORAGE_PRIVATE_BUCKET }} \
+              -e FIREBASE_STORAGE_PUBLIC_BUCKET=${{ secrets.FIREBASE_STORAGE_PUBLIC_BUCKET }} \
+              ${{ secrets.GCP_REGION }}-docker.pkg.dev/${{ secrets.GCP_PROJECT }}/mhc-api/mhc-api:latest \
+          "
