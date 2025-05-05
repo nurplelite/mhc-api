@@ -76,20 +76,19 @@ jobs:
 
       - name: Docker Build
         run: |
-          docker build -t ${{ secrets.GCP_REGION }}-docker.pkg.dev/${{ secrets.GCP_PROJECT }}/my-repo/mhc-api:latest \
-            -f apps/mhc-api/Dockerfile .
+          docker build -t ${{ secrets.GCP_REGION }}-docker.pkg.dev/${{ secrets.GCP_PROJECT }}/mhc-api/mhc-api:latest apps/mhc-api .
 
       - name: Docker Push
         run: |
-          docker push ${{ secrets.GCP_REGION }}-docker.pkg.dev/${{ secrets.GCP_PROJECT }}/my-repo/mhc-api:latest
+          docker push ${{ secrets.GCP_REGION }}-docker.pkg.dev/${{ secrets.GCP_PROJECT }}/mhc-api/mhc-api:latest
 
       - name: Deploy to VM via SSH
         run: |
           echo "${{ secrets.GCE_SSH_PRIVATE_KEY }}" > key.pem
           chmod 600 key.pem
           ssh -i key.pem -o StrictHostKeyChecking=no ${{ secrets.GCE_VM_USER }}@${{ secrets.GCE_VM_IP }} "\
-            docker pull ${{ secrets.GCP_REGION }}-docker.pkg.dev/${{ secrets.GCP_PROJECT }}/my-repo/mhc-api:latest && \
+            docker pull ${{ secrets.GCP_REGION }}-docker.pkg.dev/${{ secrets.GCP_PROJECT }}/mhc-api/mhc-api:latest && \
             docker stop mhc-api || true && \
             docker rm mhc-api || true && \
-            docker run -d --name mhc-api -p 3000:3000 ${{ secrets.GCP_REGION }}-docker.pkg.dev/${{ secrets.GCP_PROJECT }}/my-repo/mhc-api:latest \
+            docker run -d --name mhc-api -p 3000:3000 ${{ secrets.GCP_REGION }}-docker.pkg.dev/${{ secrets.GCP_PROJECT }}/mhc-api/mhc-api:latest \
           "
