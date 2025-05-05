@@ -4,6 +4,7 @@ import { AppService } from './app.service';
 import { FirestoreModule } from '@mhc-api/firestore';
 import { StorageModule } from '@mhc-api/storage';
 import { ConfigModule } from '@nestjs/config';
+import { ContactModule } from './modules/contact/contact.module';
 
 @Module({
   imports: [
@@ -12,8 +13,8 @@ import { ConfigModule } from '@nestjs/config';
     ConfigModule.forRoot({
       isGlobal: true,
       ignoreEnvFile: true,
-
     }),
+    ContactModule,
   ],
   controllers: [AppController],
   providers: [AppService],
