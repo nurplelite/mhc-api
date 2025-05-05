@@ -91,9 +91,9 @@ jobs:
           ssh -i key.pem -o StrictHostKeyChecking=no ${{ secrets.GCE_VM_USER }}@${{ secrets.GCE_VM_IP }} "\
             gcloud config set project ${{ secrets.GCP_PROJECT }} && \
             gcloud auth configure-docker ${{ secrets.GCP_REGION }}-docker.pkg.dev && \
-            docker pull ${{ secrets.GCP_REGION }}-docker.pkg.dev/${{ secrets.GCP_PROJECT }}/my-repo/mhc-api:latest && \
+            docker pull ${{ secrets.GCP_REGION }}-docker.pkg.dev/${{ secrets.GCP_PROJECT }}/mhc-api/mhc-api:latest && \
             docker stop mhc-api || true && \
             docker rm mhc-api || true && \
-            docker run -d --name mhc-api -p 3000:3000 ${{ secrets.GCP_REGION }}-docker.pkg.dev/${{ secrets.GCP_PROJECT }}/my-repo/mhc-api:latest \
+            docker run -d --name mhc-api -p 3000:3000 ${{ secrets.GCP_REGION }}-docker.pkg.dev/${{ secrets.GCP_PROJECT }}/mhc-api/mhc-api:latest \
           "
 
