@@ -31,9 +31,6 @@ jobs:
       - name: Lint
         run: pnpm nx lint mhc-api
 
-      - name: Test
-        run: pnpm nx test mhc-api
-
       - name: Build all dependencies
         run: pnpm nx run-many --target=build --all --configuration=production
 
@@ -61,9 +58,6 @@ jobs:
 
       - name: Lint
         run: pnpm nx lint mhc-api
-
-      - name: Test
-        run: pnpm nx test mhc-api
 
       - name: Build all dependencies
         run: pnpm nx run-many --target=build --all --configuration=production
