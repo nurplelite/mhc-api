@@ -3,7 +3,11 @@ import { IsEmail, IsNotEmpty, IsString, IsPhoneNumber } from 'class-validator';
 export class CreateContactDto {
   @IsString()
   @IsNotEmpty()
-  name!: string;
+  firstName!: string
+
+  @IsString()
+  @IsNotEmpty()
+  lastName!: string
 
   @IsEmail()
   @IsNotEmpty()
@@ -11,9 +15,9 @@ export class CreateContactDto {
 
   @IsPhoneNumber('US')
   @IsNotEmpty()
-  phone!: string;
+  phone!: string
 
   @IsString()
   @IsNotEmpty()
-  message!: string;
+  description!: string
 }

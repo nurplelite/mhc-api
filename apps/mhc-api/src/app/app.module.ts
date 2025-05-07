@@ -6,6 +6,7 @@ import { StorageModule } from '@mhc-api/storage';
 import { ConfigModule } from '@nestjs/config';
 import { ContactModule } from './modules/contact/contact.module';
 
+
 @Module({
   imports: [
     FirestoreModule,
@@ -14,7 +15,7 @@ import { ContactModule } from './modules/contact/contact.module';
       isGlobal: true,
       ignoreEnvFile: true,
     }),
-    ContactModule,
+    ContactModule
   ],
   controllers: [AppController],
   providers: [AppService],

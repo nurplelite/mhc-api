@@ -13,6 +13,14 @@ async function bootstrap() {
       whitelist: true,
       transform: true,
       forbidNonWhitelisted: true,
+      enableDebugMessages: true,
+      exceptionFactory: (errors) => {
+        const formattedErrors = errors.map((error) => ({
+          property: error.property,
+          constraints: error.constraints,
+        }));
+        return new Error(JSON.stringify(formattedErrors));
+      }
     }),
   );
   const port = process.env.PORT || 3000;
