@@ -1,6 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { Firestore } from '@google-cloud/firestore';
 import { ConfigService } from '@nestjs/config';
+import { instanceToPlain } from 'class-transformer';
 
 
 @Injectable()
@@ -38,6 +39,6 @@ export class FirestoreService {
   }
 
   async setDocument(collection: string, data: any): Promise<void> {
-    await this.firestore.collection(collection).doc().set(data, { merge: true })
+    await this.firestore.collection(collection).doc().set(instanceToPlain(data), { merge: true })
   }
 }
