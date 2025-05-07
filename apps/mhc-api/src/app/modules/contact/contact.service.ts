@@ -15,7 +15,7 @@ export class ContactService {
     return this.firestore.getDocument(collection, id);
   }
 
-  setDocument(collection: string, data: any) {
+  setDocument(collection: string, data: CreateContactDto | UpdateContactDto) {
     return this.firestore.setDocument(collection, data);
   }
 

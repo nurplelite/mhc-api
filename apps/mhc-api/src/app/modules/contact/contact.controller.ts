@@ -32,7 +32,6 @@ export class ContactController {
   private readonly logger = new Logger();
 
   constructor(private readonly contactService: ContactService) {
-    this.logger.debug('constructor entereed')
   }
 
 
