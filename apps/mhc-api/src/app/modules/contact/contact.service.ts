@@ -1,26 +1,33 @@
 import { Injectable } from '@nestjs/common';
+import { FirestoreService } from '@mhc-api/firestore';
+import { StorageService } from '@mhc-api/storage';
 import { CreateContactDto } from './dto/create-contact.dto';
 import { UpdateContactDto } from './dto/update-contact.dto';
 
 @Injectable()
 export class ContactService {
-  create(createContactDto: CreateContactDto) {
-    return 'This action adds a new contact';
+  constructor(
+    private readonly firestore: FirestoreService,
+    private readonly storage: StorageService,
+  ) {}
+
+  getDocument(collection: string, id: string) {
+    return this.firestore.getDocument(collection, id);
   }
 
-  findAll() {
-    return `This action returns all contact`;
+  setDocument(collection: string, data: any) {
+    return this.firestore.setDocument(collection, data);
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} contact`;
+  uploadFile(path: string, buffer: Buffer, contentType: string) {
+    return this.storage.uploadFile(path, buffer, contentType);
   }
 
-  update(id: number, updateContactDto: UpdateContactDto) {
-    return `This action updates a #${id} contact`;
+  deleteFile(path: string) {
+    return this.storage.deleteFile(path);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} contact`;
+  downloadFile(path: string) {
+    return this.storage.downloadFile(path);
   }
 }
