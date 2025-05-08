@@ -14,6 +14,9 @@
     },
     {
       "path": "./libs/shared/firestore"
+    },
+    {
+      "path": "./libs/shared/gmail"
     }
   ]
 }
