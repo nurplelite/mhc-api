@@ -12,7 +12,8 @@
   "include": [
     "src/**/*.ts",
     "../../libs/shared/firestore/src/**/*.ts",
-    "../../libs/shared/storage/src/**/*.ts"
+    "../../libs/shared/storage/src/**/*.ts",
+    "../../libs/shared/gmail/src/**/*.ts"
   ],
   "exclude": [
     "out-tsc",
