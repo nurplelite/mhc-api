@@ -5,7 +5,7 @@ import { FirestoreModule } from '@mhc-api/firestore';
 import { StorageModule } from '@mhc-api/storage';
 import { ConfigModule } from '@nestjs/config';
 import { ContactModule } from './modules/contact/contact.module';
-
+import { SessionModule } from './modules/session/session.module';
 
 @Module({
   imports: [
@@ -15,7 +15,8 @@ import { ContactModule } from './modules/contact/contact.module';
       isGlobal: true,
       ignoreEnvFile: true,
     }),
-    ContactModule
+    ContactModule,
+    SessionModule,
   ],
   controllers: [AppController],
   providers: [AppService],
