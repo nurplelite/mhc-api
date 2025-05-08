@@ -12,8 +12,8 @@ import {
 } from '@nestjs/common';
 // import { FileInterceptor } from '@nestjs/platform-express';
 // import { type Response } from 'express';
-import { ContactService } from './contact.service';
-import { CreateContactDto } from './dto/create-contact.dto';
+import { FormService } from './form.service';
+import { CreateFormDto } from './dto/create-form.dto';
 
 // interface MulterFile {
 //   fieldname: string;
@@ -29,23 +29,23 @@ import { CreateContactDto } from './dto/create-contact.dto';
 
 
 
-@Controller('contact')
-export class ContactController {
+@Controller('Form')
+export class FormController {
   private readonly logger = new Logger();
 
-  constructor(private readonly contactService: ContactService) {
+  constructor(private readonly FormService: FormService) {
   }
 
 
   @Get('form/:collection/:id')
   getDoc(@Param('collection') c: string, @Param('id') id: string) {
     this.logger.debug('getDoc entered with:', c, id)
-    return this.contactService.getDocument(c, id);
+    return this.FormService.getDocument(c, id);
   }
 
-  @Post('form/submit/:collection')
-  setDoc(@Param('collection') c: string, @Body() form: CreateContactDto) {
-    this.logger.debug('setDoc entered with:', c , form)
-    return this.contactService.setDocument(c , form);
+  @Post('form/submit/:accountId')
+  setDoc(@Param('accountId') aId: string, @Body() form: CreateFormDto) {
+    this.logger.debug('setDoc entered with:', aId , form)
+    return this.FormService.setDocument(aId , form);
   }
 }

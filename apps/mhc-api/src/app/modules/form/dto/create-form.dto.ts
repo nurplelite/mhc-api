@@ -1,6 +1,6 @@
 import { IsEmail, IsNotEmpty, IsString, IsPhoneNumber } from 'class-validator';
 
-export class CreateContactDto {
+export class CreateFormDto {
   @IsString()
   @IsNotEmpty()
   firstName!: string

@@ -20,7 +20,7 @@ export class SessionService {
   constructor(private firestore: FirestoreService){}
 
   async createSession(siteId: string): Promise<{ token: string; sessionId: string }> {
-    const siteSnap = await this.firestore.getDocument('site', siteId);
+    this.logger.debug('Creating session for site:', siteId);
 
     const sessionSecret = process.env.SESSION_SECRET;
     if (!sessionSecret) {
@@ -28,12 +28,13 @@ export class SessionService {
       throw new Error('Session secret not found in environment variables');
     }
 
-    if (!siteSnap.exists) {
-      this.logger.error('Site not found in Firestore');
-      throw new UnauthorizedException('Invalid site ID');
+    const site = await this.firestore.getDocument('sites', siteId);
+
+    if (!site) {
+      this.logger.warn(`Site not found for siteId: ${siteId}`);
+      throw new UnauthorizedException('Site not found');
     }
 
-    const site = siteSnap.data();
     const sessionId = uuidv4();
     const payload = {
       sessionId,

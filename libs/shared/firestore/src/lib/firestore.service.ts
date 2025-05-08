@@ -34,7 +34,9 @@ export class FirestoreService {
   // }
 
   async getDocument(collection: string, docId: string): Promise<any> {
+    this.logger.debug(`Fetching document from collection: ${collection}, docId: ${docId}`)
     const doc = await this.firestore.collection(collection).doc(docId).get()
+    this.logger.debug(`Fetched document from collection: ${collection}, docId: ${docId}`)
     return doc.exists ? doc.data() : null
   }
 
