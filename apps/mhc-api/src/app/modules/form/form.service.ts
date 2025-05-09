@@ -32,7 +32,7 @@ export class FormService {
     }
 
     const collection = `accounts/${accountId}/forms`
-    return this.firestore.setDocument(form.accountId, form)
+    return this.firestore.setDocument(collection, form)
   }
 
   uploadFile(path: string, buffer: Buffer, contentType: string) {

@@ -9,11 +9,14 @@ import {
   // UploadedFile,
   // Res,
   Logger,
+  UseGuards,
 } from '@nestjs/common';
 // import { FileInterceptor } from '@nestjs/platform-express';
 // import { type Response } from 'express';
 import { FormService } from './form.service';
 import { CreateFormDto } from './dto/create-form.dto';
+import { SessionGuard } from '../session/session.guard';
+
 
 // interface MulterFile {
 //   fieldname: string;
@@ -30,6 +33,7 @@ import { CreateFormDto } from './dto/create-form.dto';
 
 
 @Controller('form')
+@UseGuards(SessionGuard)
 export class FormController {
   private readonly logger = new Logger();
 

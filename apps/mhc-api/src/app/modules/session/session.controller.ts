@@ -2,8 +2,10 @@ import {
   Controller,
   Post,
   Param,
-  Logger
+  Logger,
+  Res,
 } from '@nestjs/common';
+import { type Response } from 'express';
 import { SessionService } from './session.service';
 
 @Controller('session')
@@ -11,16 +13,21 @@ export class SessionController {
   private readonly logger = new Logger(SessionController.name);
   constructor(private readonly sessionService: SessionService) {}
 
-  @Post('start/:siteId')
-  create(@Param('siteId') siteId: string) {
-    this.logger.debug('Creating session for site:', siteId);
-    return this.sessionService.createSession(siteId);
-  }
+  @Post('session/start/:siteId')
+  async startSession(
+    @Param('siteId') siteId: string,
+    @Res({ passthrough: true }) res: Response
+  ) {
+    const { token } = await this.sessionService.startSession(siteId)
 
-  @Post('verify/:token')
-  verify(@Param('token') token: string) {
-    this.logger.debug('Verifying session with token:', token);
-    return this.sessionService.verifySession(token);
+    res.cookie('session', token, {
+      httpOnly: true,
+      sameSite: 'lax',
+      secure: process.env.NODE_ENV === 'production',
+      maxAge: 60 * 60 * 1000 // 1 hour
+    })
+
+    return { status: 'ok' }
   }
 
 }
