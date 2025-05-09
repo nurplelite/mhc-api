@@ -22,9 +22,8 @@
       "@/*": ["./src/*"],
       "@mhc-api/firestore": ["libs/shared/firestore/src/index.ts"],
       "@mhc-api/storage": ["libs/shared/storage/src/index.ts"],
-      "@shared/firestore": ["libs/shared/firestore/src/index.ts"],
-      "@shared/gmail": ["libs/shared/gmail/src/index.ts"],
-      "@shared/storage": ["libs/shared/storage/src/index.ts"],
+      "@mhc-api/gmail": ["libs/shared/gmail/src/index.ts"],
+      "@mhc-api/*": ["libs/shared/*/src/index.ts"],
       "@test/*": ["./test/*"]
     }
   }

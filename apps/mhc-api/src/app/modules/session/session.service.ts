@@ -1,33 +1,23 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import  { Injectable, UnauthorizedException } from '@nestjs/common';
 import { FirestoreService } from '@mhc-api/firestore';
-import * as jwt from 'jsonwebtoken';
+import { CreateSessionDto } from './dto/create-session.dto';
+import { AuthService } from '@mhc-api/auth';
 import { v4 as uuidv4 } from 'uuid';
+import * as jwt from 'jsonwebtoken';
+
 import { Logger } from '@nestjs/common';
 
-export interface SessionTokenPayload {
-  sessionId: string;
-  siteId: string;
-  accountId: string;
-  domain: string;
-  iat?: number;
-  exp?: number;
-}
+
 
 
 @Injectable()
 export class SessionService {
   private readonly logger = new Logger(SessionService.name);
 
-  constructor(private firestore: FirestoreService){}
+  constructor(private firestore: FirestoreService, private auth: AuthService){}
 
   async startSession(siteId: string): Promise<{ token: string; sessionId: string }> {
     this.logger.debug('Creating session for site:', siteId);
-
-    const sessionSecret = process.env.SESSION_SECRET;
-    if (!sessionSecret) {
-      this.logger.error('Session secret not found in environment variables');
-      throw new Error('Session secret not found in environment variables');
-    }
 
     const site = await this.firestore.getDocument('sites', siteId);
 
@@ -59,14 +49,14 @@ export class SessionService {
     return { token, sessionId };
   }
 
-  async verifySession(token: string): Promise<SessionTokenPayload> {
+  async verifySession(token: string): Promise<CreateSessionDto> {
     const sessionSecret = process.env.SESSION_SECRET
     if (!sessionSecret) {
       throw new Error('Session secret not found in environment variables')
     }
 
     try {
-      const decoded = jwt.verify(token, sessionSecret) as SessionTokenPayload
+      const decoded = jwt.verify(token, sessionSecret) as CreateSessionDto
       return decoded
     } catch (err) {
       this.logger.warn('Session verification failed:', err)
