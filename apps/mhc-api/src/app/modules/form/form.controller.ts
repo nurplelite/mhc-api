@@ -29,7 +29,7 @@ import { CreateFormDto } from './dto/create-form.dto';
 
 
 
-@Controller('Form')
+@Controller('form')
 export class FormController {
   private readonly logger = new Logger();
 
@@ -37,13 +37,13 @@ export class FormController {
   }
 
 
-  @Get('form/:collection/:id')
+  @Get(':collection/:id')
   getDoc(@Param('collection') c: string, @Param('id') id: string) {
     this.logger.debug('getDoc entered with:', c, id)
     return this.FormService.getDocument(c, id);
   }
 
-  @Post('form/submit/:accountId')
+  @Post('submit/:accountId')
   setDoc(@Param('accountId') aId: string, @Body() form: CreateFormDto) {
     this.logger.debug('setDoc entered with:', aId , form)
     return this.FormService.setDocument(aId , form);
