@@ -13,7 +13,7 @@ export class CreateFormDto {
   @IsNotEmpty()
   email!: string;
 
-  @IsPhoneNumber('US')
+  @IsString() //PhoneNumber('US')
   @IsNotEmpty()
   phone!: string
 

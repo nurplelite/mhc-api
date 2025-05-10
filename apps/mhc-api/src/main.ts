@@ -3,15 +3,30 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app/app.module';
 import { ValidationPipe } from '@nestjs/common';
 
+const cookieParser = require('cookie-parser');
+
 async function bootstrap() {
   const app = await NestFactory.create(AppModule)
 
+  //this needs to be dynamic from firestore in the future.
+  const sites: string[] = [
+    'http://localhost:4200',
+    'http://127.0.0.1:4200',
+    'https://madhareconsulting.com',
+    'https://www.madhareconsulting.com',
+    'https://djps-llc.com',
+    'https://www.djps-llc.com',
+    'https://api.madhareconsulting.com',
+  ]
+
   app.enableCors({
-    origin: ['http://localhost:4200', 'http://127.0.0.1:4200'],
+    origin: sites,
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization']
-  });
+  })
+
+  app.use(cookieParser())
 
   app.useGlobalPipes(
     new ValidationPipe({
@@ -27,7 +42,7 @@ async function bootstrap() {
         return new Error(JSON.stringify(formattedErrors))
       }
     }),
-  );
+  )
 
 
   const port = process.env.PORT || 3000
