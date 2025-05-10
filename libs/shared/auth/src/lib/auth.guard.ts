@@ -1,16 +1,18 @@
 import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common'
 import { Request } from 'express'
-import { SessionService, SessionTokenPayload } from './session.service'
+import { AuthService } from './auth.service'
+import { SessionData } from '../types/session-token-payload'
+
 
 declare module 'express' {
   interface Request {
-    session?: SessionTokenPayload
+    session?: SessionData
   }
 }
 
 @Injectable()
 export class SessionGuard implements CanActivate {
-  constructor(private sessionService: SessionService) {}
+  constructor(private auth: AuthService) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const req = context.switchToHttp().getRequest<Request>()
@@ -21,11 +23,11 @@ export class SessionGuard implements CanActivate {
     }
 
     try {
-      const decoded = await this.sessionService.verifySession(token)
+      const decoded = await this.auth.verifyToken(token)
       req['session'] = decoded // attach session data to request
       return true
     } catch (err) {
-      throw new UnauthorizedException('Invalid session')
+      throw new UnauthorizedException(err)
     }
   }
 }
