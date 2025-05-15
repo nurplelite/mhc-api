@@ -23,8 +23,8 @@ export class SessionController {
 
     res.cookie('session', token, {
       httpOnly: true,
-      sameSite: 'lax',
-      secure: false,//process.env.NODE_ENV === 'production',
+      sameSite: 'none',
+      secure: true,
       maxAge: 60 * 60 * 1000 // 1 hour
     })
 
