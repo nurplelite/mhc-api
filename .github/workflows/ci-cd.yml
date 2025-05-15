@@ -103,5 +103,5 @@ jobs:
               -e GOOGLE_CLOUD_DB=${{ secrets.GOOGLE_CLOUD_DB }} \
               -e FIREBASE_STORAGE_PRIVATE_BUCKET=${{ secrets.FIREBASE_STORAGE_PRIVATE_BUCKET }} \
               -e FIREBASE_STORAGE_PUBLIC_BUCKET=${{ secrets.FIREBASE_STORAGE_PUBLIC_BUCKET }} \
-              -e SESSION_SECRET=${{ secrets.SESSION_SECRET }} \
+              -e SESSION_SECRET=${{ secrets.SESSION_SECRET }}
               ${{ secrets.GCP_REGION }}-docker.pkg.dev/${{ secrets.GCP_PROJECT }}/mhc-api/mhc-api:latest
