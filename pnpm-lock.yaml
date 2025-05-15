@@ -135,6 +135,9 @@ importers:
       '@types/node':
         specifier: ~18.16.9
         version: 18.16.20
+      cookie-parser:
+        specifier: ^1.4.7
+        version: 1.4.7
       eslint:
         specifier: ^9.8.0
         version: 9.26.0
