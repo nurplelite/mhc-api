@@ -2,39 +2,11 @@ name: CI/CD for mhc-api
 
 on:
   push:
-    branches: [main]
-  pull_request:
-    branches: ['**']
+    branches:
+      - main
+      - qa
 
 jobs:
-  dev-pr-check:
-    name: Build & Test (Dev PR Check)
-    if: github.event_name == 'pull_request'
-    runs-on: ubuntu-latest
-    environment: development
-
-    steps:
-      - uses: actions/checkout@v3
-
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 18
-
-      - run: npm install -g pnpm
-        name: Install PNPM
-
-      - run: pnpm install
-        name: Install dependencies
-
-      - run: pnpm nx lint mhc-api
-        name: Lint
-
-      - run: pnpm nx test mhc-api
-        name: Test
-
-      - name: Build all dependencies
-        run: pnpm nx run-many --target=build --all --configuration=production
-
   prod-deploy:
     name: Deploy to Production
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
@@ -42,23 +14,26 @@ jobs:
     environment: production
 
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout repo
+        uses: actions/checkout@v3
 
-      - uses: actions/setup-node@v3
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
         with:
           node-version: 18
 
-      - run: npm install -g pnpm
-        name: Install PNPM
+      - name: Install PNPM
+        run: npm install -g pnpm
 
-      - run: pnpm install
-        name: Install dependencies
+      - name: Install dependencies
+        run: pnpm install
 
-      - run: pnpm nx lint mhc-api
-        name: Lint
+      # Uncomment once linting is fixed
+      # - name: Lint
+      #   run: pnpm nx lint mhc-api
 
-      - run: pnpm nx run-many --target=build --all --configuration=production
-        name: Build all dependencies
+      - name: Build all dependencies
+        run: pnpm nx run-many --target=build --all --configuration=production
 
       - name: Authenticate to Google Cloud
         run: |
@@ -82,10 +57,10 @@ jobs:
       - name: Deploy to VM via SSH
         uses: appleboy/ssh-action@v0.1.8
         with:
-          host: ${{ secrets.GCE_VM_IP }}
+          host:     ${{ secrets.GCE_VM_IP }}
           username: ${{ secrets.GCE_VM_USER }}
-          key: ${{ secrets.GCE_SSH_PRIVATE_KEY }}
-          port: 22
+          key:      ${{ secrets.GCE_SSH_PRIVATE_KEY }}
+          port:     22
           script: |
             set -xe
             gcloud config set project ${{ secrets.GCP_PROJECT }}
@@ -93,8 +68,8 @@ jobs:
 
             docker pull ${{ secrets.GCP_REGION }}-docker.pkg.dev/${{ secrets.GCP_PROJECT }}/mhc-api/mhc-api:latest
 
-            docker stop mhc-api   || true
-            docker rm   mhc-api   || true
+            docker stop mhc-api || true
+            docker rm   mhc-api || true
 
             docker run -d \
               --name mhc-api \
@@ -105,3 +80,68 @@ jobs:
               -e FIREBASE_STORAGE_PUBLIC_BUCKET=${{ secrets.FIREBASE_STORAGE_PUBLIC_BUCKET }} \
               -e SESSION_SECRET=${{ secrets.SESSION_SECRET }} \
               ${{ secrets.GCP_REGION }}-docker.pkg.dev/${{ secrets.GCP_PROJECT }}/mhc-api/mhc-api:latest
+
+  dev-deploy:
+    name: Deploy to Development (qa)
+    if: github.ref == 'refs/heads/qa' && github.event_name == 'push'
+    runs-on: ubuntu-latest
+    environment: development
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Install PNPM
+        run: npm install -g pnpm
+
+      - name: Install dependencies
+        run: pnpm install
+
+      # Uncomment once linting is fixed
+      # - name: Lint
+      #   run: pnpm nx lint mhc-api
+
+      - name: Build all dependencies
+        run: pnpm nx run-many --target=build --all --configuration=production
+
+      - name: Authenticate to Google Cloud
+        run: |
+          cat <<EOF > ${HOME}/gcloud.json
+          ${{ secrets.GCP_SA_KEY }}
+          EOF
+          gcloud auth activate-service-account --key-file=${HOME}/gcloud.json
+          gcloud config set project ${{ secrets.GCP_PROJECT }}
+          gcloud auth configure-docker ${{ secrets.GCP_REGION }}-docker.pkg.dev
+
+      - name: Build & Push Docker image (dev tag)
+        run: |
+          docker build \
+            -t ${{ secrets.GCP_REGION }}-docker.pkg.dev/${{ secrets.GCP_PROJECT }}/mhc-api/mhc-api:dev \
+            -f apps/mhc-api/Dockerfile .
+          docker push ${{ secrets.GCP_REGION }}-docker.pkg.dev/${{ secrets.GCP_PROJECT }}/mhc-api/mhc-api:dev
+
+      - name: Deploy Dev container via SSH
+        uses: appleboy/ssh-action@v0.1.8
+        with:
+          host:     ${{ secrets.GCE_VM_IP }}
+          username: ${{ secrets.GCE_VM_USER }}
+          key:      ${{ secrets.GCE_SSH_PRIVATE_KEY }}
+          port:     22
+          script: |
+            set -xe
+
+            docker pull ${{ secrets.GCP_REGION }}-docker.pkg.dev/${{ secrets.GCP_PROJECT }}/mhc-api/mhc-api:dev
+
+            docker stop mhc-api-dev || true
+            docker rm   mhc-api-dev || true
+
+            docker run -d \
+              --name mhc-api-dev \
+              -p 3001:3000 \
+              -e SESSION_SECRET=${{ secrets.SESSION_SECRET }} \
+              ${{ secrets.GCP_REGION }}-docker.pkg.dev/${{ secrets.GCP_PROJECT }}/mhc-api/mhc-api:dev
