@@ -32,8 +32,8 @@ jobs:
       - run: pnpm nx test mhc-api
         name: Test
 
-      - run: pnpm nx run-many --target=build --all --configuration=production
-        name: Build all dependencies
+      - name: Build all dependencies
+        run: pnpm nx run-many --target=build --all --configuration=production
 
   prod-deploy:
     name: Deploy to Production
@@ -80,20 +80,21 @@ jobs:
           docker push ${{ secrets.GCP_REGION }}-docker.pkg.dev/${{ secrets.GCP_PROJECT }}/mhc-api/mhc-api:latest
 
       - name: Deploy to VM via SSH
-        run: |
-          echo "${{ secrets.GCE_SSH_PRIVATE_KEY }}" > key.pem
-          chmod 600 key.pem
-
-          ssh -i key.pem -o StrictHostKeyChecking=no ${{ secrets.GCE_VM_USER }}@${{ secrets.GCE_VM_IP }} << 'EOF_REMOTE'
+        uses: appleboy/ssh-action@v0.1.8
+        with:
+          host: ${{ secrets.GCE_VM_IP }}
+          username: ${{ secrets.GCE_VM_USER }}
+          key: ${{ secrets.GCE_SSH_PRIVATE_KEY }}
+          port: 22
+          script: |
             set -xe
-
             gcloud config set project ${{ secrets.GCP_PROJECT }}
             gcloud auth configure-docker ${{ secrets.GCP_REGION }}-docker.pkg.dev
 
             docker pull ${{ secrets.GCP_REGION }}-docker.pkg.dev/${{ secrets.GCP_PROJECT }}/mhc-api/mhc-api:latest
 
-            docker stop mhc-api || true
-            docker rm   mhc-api || true
+            docker stop mhc-api   || true
+            docker rm   mhc-api   || true
 
             docker run -d \
               --name mhc-api \
@@ -104,4 +105,3 @@ jobs:
               -e FIREBASE_STORAGE_PUBLIC_BUCKET=${{ secrets.FIREBASE_STORAGE_PUBLIC_BUCKET }} \
               -e SESSION_SECRET=${{ secrets.SESSION_SECRET }} \
               ${{ secrets.GCP_REGION }}-docker.pkg.dev/${{ secrets.GCP_PROJECT }}/mhc-api/mhc-api:latest
-          EOF_REMOTE
