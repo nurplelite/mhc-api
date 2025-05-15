@@ -12,7 +12,8 @@
   "include": [
     "src/**/*.ts",
     "../../libs/shared/firestore/src/**/*.ts",
-    "../../libs/shared/storage/src/**/*.ts"
+    "../../libs/shared/storage/src/**/*.ts",
+    "../../libs/shared/gmail/src/**/*.ts"
   ],
   "exclude": [
     "out-tsc",
@@ -30,6 +31,12 @@
     },
     {
       "path": "../../libs/shared/firestore/tsconfig.lib.json"
+    },
+    {
+      "path": "../../libs/shared/gmail/tsconfig.lib.json"
+    },
+    {
+      "path": "../../libs/shared/auth/tsconfig.lib.json"
     }
   ]
 }

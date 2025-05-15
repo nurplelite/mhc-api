@@ -30,6 +30,10 @@ module.exports = {
     alias: {
       '@mhc-api/firestore': path.resolve(__dirname, '../../libs/shared/firestore/src/index.ts'),
       '@mhc-api/storage': path.resolve(__dirname, '../../libs/shared/storage/src/index.ts'),
+      '@mhc-api/auth': path.resolve(__dirname, '../../libs/shared/auth/src/index.ts'),
+      '@mhc-api/gmail': path.resolve(__dirname, '../../libs/shared/gmail/src/index.ts'),
+
+
     },
   }
 };

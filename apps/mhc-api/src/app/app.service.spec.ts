@@ -1,20 +1,20 @@
 import { Test } from '@nestjs/testing';
-import { ContactService } from './modules/contact/contact.service';
+import { FormService } from './modules/form/form.service';
 
 describe('AppService', () => {
-  let service: ContactService;
+  let service: FormService;
 
   beforeAll(async () => {
     const app = await Test.createTestingModule({
-      providers: [ContactService],
+      providers: [FormService],
     }).compile();
 
-    service = app.get<ContactService>(ContactService);
+    service = app.get<FormService>(FormService);
   });
 
   describe('getData', () => {
     it('get a form"', () => {
-      expect(service.getDocument('contact', 'contact')).toEqual({message: 'Hello API'});
+      expect(service.getDocument('Form', 'Form')).toEqual({message: 'Hello API'});
     });
   });
 });

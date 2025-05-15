@@ -1,21 +1,22 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { FirestoreModule } from '@mhc-api/firestore';
-import { StorageModule } from '@mhc-api/storage';
 import { ConfigModule } from '@nestjs/config';
-import { ContactModule } from './modules/contact/contact.module';
+import { SharedModule } from './shared.module';
+import { FormModule } from './modules/form/form.module';
+import { SessionModule } from './modules/session/session.module';
 
 
 @Module({
   imports: [
-    FirestoreModule,
-    StorageModule,
+    FormModule,
+    SessionModule,
+    SharedModule,
     ConfigModule.forRoot({
       isGlobal: true,
       ignoreEnvFile: true,
     }),
-    ContactModule
+
   ],
   controllers: [AppController],
   providers: [AppService],
