@@ -20,11 +20,18 @@ async function bootstrap() {
   ]
 
   app.enableCors({
-    origin: sites,
+    origin: (origin, callback) => {
+      // Allow same-origin or tools like Postman (origin === undefined)
+      if (!origin || sites.includes(origin)) {
+        callback(null, origin); // ✅ One valid origin
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization']
-  })
+  });
 
   app.use(cookieParser())
 
