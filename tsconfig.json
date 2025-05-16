@@ -20,6 +20,9 @@
     },
     {
       "path": "./libs/shared/auth"
+    },
+    {
+      "path": "./libs/shared/config"
     }
   ]
 }
