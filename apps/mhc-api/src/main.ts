@@ -8,31 +8,31 @@ const cookieParser = require('cookie-parser');
 async function bootstrap() {
   const app = await NestFactory.create(AppModule)
 
-  //this needs to be dynamic from firestore in the future.
-  const sites: string[] = [
-    'http://localhost:4200',
-    'http://127.0.0.1:4200',
-    'https://madhareconsulting.com',
-    'https://www.madhareconsulting.com',
-    'https://djps-llc.com',
-    'https://www.djps-llc.com',
-    'https://api.madhareconsulting.com',
-  ]
+  //moving cors to nginx
+  // const sites: string[] = [
+  //   'http://localhost:4200',
+  //   'http://127.0.0.1:4200',
+  //   'https://madhareconsulting.com',
+  //   'https://www.madhareconsulting.com',
+  //   'https://djps-llc.com',
+  //   'https://www.djps-llc.com',
+  //   'https://api.madhareconsulting.com',
+  // ]
 
-  //updating for main push
-  app.enableCors({
-    origin: (origin, callback) => {
-      // Allow same-origin or tools like Postman (origin === undefined)
-      if (!origin || sites.includes(origin)) {
-        callback(null, origin); // ✅ One valid origin
-      } else {
-        callback(new Error('Not allowed by CORS'));
-      }
-    },
-    credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization']
-  });
+  // //updating for main push
+  // app.enableCors({
+  //   origin: (origin, callback) => {
+  //     // Allow same-origin or tools like Postman (origin === undefined)
+  //     if (!origin || sites.includes(origin)) {
+  //       callback(null, origin); // ✅ One valid origin
+  //     } else {
+  //       callback(new Error('Not allowed by CORS'));
+  //     }
+  //   },
+  //   credentials: true,
+  //   methods: ['GET', 'POST', 'PUT', 'OPTIONS'],
+  //   allowedHeaders: ['Content-Type', 'Authorization']
+  // });
 
   app.use(cookieParser())
 
