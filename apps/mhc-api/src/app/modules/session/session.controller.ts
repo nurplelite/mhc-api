@@ -29,6 +29,6 @@ export class SessionController {
     })
 
     this.logger.debug(`Session cookie set for siteId: ${siteId}`)
-    return { status: 'ok' }
+    return { status: 'ok', token }
   }
 }
