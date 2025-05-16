@@ -19,6 +19,7 @@ async function bootstrap() {
     'https://api.madhareconsulting.com',
   ]
 
+  //updating for main push
   app.enableCors({
     origin: (origin, callback) => {
       // Allow same-origin or tools like Postman (origin === undefined)
