@@ -14,7 +14,8 @@ import { SessionModule } from './modules/session/session.module';
     SharedModule,
     ConfigModule.forRoot({
       isGlobal: true,
-      ignoreEnvFile: true,
+      ignoreEnvFile: false, //
+      envFilePath: '.env',
     }),
 
   ],

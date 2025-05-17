@@ -12,7 +12,7 @@ ENV PORT=3000
 WORKDIR /app
 
 RUN addgroup --system mhc-api && \
-          adduser --system -G mhc-api mhc-api
+    adduser --system -G mhc-api mhc-api
 
 COPY apps/mhc-api/dist mhc-api/
 RUN chown -R mhc-api:mhc-api .
