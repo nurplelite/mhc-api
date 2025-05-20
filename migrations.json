@@ -14,6 +14,13 @@
       "subject": "added patch for review later, but initial review will not incporate."
     },
     "targetVersion": "latest",
-    "confirmedPackageUpdates": true
+    "confirmedPackageUpdates": true,
+    "completedMigrations": {
+      "21-1-0-add-ignore-entries-for-nx-rule-files": {
+        "type": "failed",
+        "name": "21-1-0-add-ignore-entries-for-nx-rule-files",
+        "error": "Unable to determine implementation path for \"/home/gurplelite/projects/mhc-api/node_modules/.pnpm/nx@21.0.2_@swc-node+register@1.9.2_@swc+core@1.5.29_@swc+helpers@0.5.17__@swc+types@0.1_153a5f18fb4ec178fa89cc4732cdff2e/node_modules/nx/migrations.json:21-1-0-add-ignore-entries-for-nx-rule-files\""
+      }
+    }
   }
 }
