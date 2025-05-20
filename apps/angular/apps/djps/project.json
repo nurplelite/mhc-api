@@ -1,0 +1,119 @@
+{
+  "name": "djps",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "prefix": "app",
+  "sourceRoot": "apps/djps/src",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@angular-devkit/build-angular:application",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/apps/djps",
+        "index": "apps/djps/src/index.html",
+        "browser": "apps/djps/src/main.ts",
+        "polyfills": ["zone.js"],
+        "tsConfig": "apps/djps/tsconfig.app.json",
+        "inlineStyleLanguage": "scss",
+        "assets": [
+          {
+            "glob": "**/*",
+            "input": "apps/djps/public"
+          }
+        ],
+        "styles": ["apps/djps/src/styles.scss"],
+        "scripts": [],
+        "server": "apps/djps/src/main.server.ts",
+        "ssr": {
+          "entry": "apps/djps/src/server.ts"
+        },
+        "outputMode": "server",
+        "prerender": true
+      },
+      "configurations": {
+        "production": {
+          "budgets": [
+            {
+              "type": "initial",
+              "maximumWarning": "500kb",
+              "maximumError": "1mb"
+            },
+            {
+              "type": "anyComponentStyle",
+              "maximumWarning": "4kb",
+              "maximumError": "8kb"
+            }
+          ],
+          "outputHashing": "all"
+        },
+        "development": {
+          "optimization": false,
+          "extractLicenses": false,
+          "sourceMap": true
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "serve": {
+      "executor": "@angular-devkit/build-angular:dev-server",
+      "configurations": {
+        "production": {
+          "buildTarget": "djps:build:production"
+        },
+        "development": {
+          "buildTarget": "djps:build:development"
+        }
+      },
+      "defaultConfiguration": "development",
+      "continuous": true
+    },
+    "serve-ssr": {
+      "executor": "@nx/node:node",
+      "options": {
+        "buildTarget": "djps:server",
+        "watch": true,
+        "outputPath": "dist/apps/djps/server",
+        "main": "dist/apps/djps/server/main.js"
+      }
+    },
+    "server": {
+      "executor": "@angular-devkit/build-angular:server",
+      "options": {
+        "outputPath": "dist/apps/djps/server",
+        "main": "apps/djps/src/main.server.ts",
+        "tsConfig": "apps/djps/tsconfig.server.json"
+      },
+      "configurations": {
+        "production": {
+          "optimization": true,
+          "sourceMap": false,
+          "extractLicenses": true,
+          "outputHashing": "media"
+        },
+        "development": {
+          "optimization": false,
+          "sourceMap": true
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "extract-i18n": {
+      "executor": "@angular-devkit/build-angular:extract-i18n",
+      "options": {
+        "buildTarget": "djps:build"
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    },
+    "serve-static": {
+      "executor": "@nx/web:file-server",
+      "options": {
+        "buildTarget": "djps:build",
+        "staticFilePath": "dist/apps/djps/browser",
+        "spa": true
+      }
+    }
+  }
+}
