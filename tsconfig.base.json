@@ -25,6 +25,8 @@
       "@mhc-api/firestore": ["libs/api/firestore/src/index.ts"],
       "@mhc-api/gmail": ["libs/api/gmail/src/index.ts"],
       "@mhc-api/storage": ["libs/api/storage/src/index.ts"],
+      "@djps/api": ["libs/api/client/src/index.ts"],
+      "@mhc/theme": ["libs/ui/theme/src/index.ts"],
       "@test/*": ["./test/*"]
     }
   }

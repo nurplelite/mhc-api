@@ -23,6 +23,18 @@
     },
     {
       "path": "./libs/api/config"
+    },
+    {
+      "path": "./apps/angular/apps/djps"
+    },
+    {
+      "path": "./apps/angular/apps/madhare"
+    },
+    {
+      "path": "./libs/api/client"
+    },
+    {
+      "path": "./libs/ui/theme"
     }
   ]
 }

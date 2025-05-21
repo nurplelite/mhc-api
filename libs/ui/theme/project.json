@@ -1,7 +1,7 @@
 {
   "name": "theme",
-  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "libs/shared/theme/src",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/ui/theme/src",
   "prefix": "lib",
   "projectType": "library",
   "tags": [],
@@ -10,14 +10,14 @@
       "executor": "@nx/angular:ng-packagr-lite",
       "outputs": ["{workspaceRoot}/dist/{projectRoot}"],
       "options": {
-        "project": "libs/shared/theme/ng-package.json"
+        "project": "libs/ui/theme/ng-package.json"
       },
       "configurations": {
         "production": {
-          "tsConfig": "libs/shared/theme/tsconfig.lib.prod.json"
+          "tsConfig": "libs/ui/theme/tsconfig.lib.prod.json"
         },
         "development": {
-          "tsConfig": "libs/shared/theme/tsconfig.lib.json"
+          "tsConfig": "libs/ui/theme/tsconfig.lib.json"
         }
       },
       "defaultConfiguration": "production"
