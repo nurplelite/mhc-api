@@ -4,16 +4,16 @@
   "include": [],
   "references": [
     {
-      "path": "../../libs/shared/gmail"
+      "path": "../../libs/api/gmail"
     },
     {
-      "path": "../../libs/shared/auth"
+      "path": "../../libs/api/auth"
     },
     {
-      "path": "../../libs/shared/storage"
+      "path": "../../libs/api/storage"
     },
     {
-      "path": "../../libs/shared/firestore"
+      "path": "../../libs/api/firestore"
     },
     {
       "path": "./tsconfig.app.json"

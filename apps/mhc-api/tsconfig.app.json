@@ -11,9 +11,9 @@
   },
   "include": [
     "src/**/*.ts",
-    "../../libs/shared/firestore/src/**/*.ts",
-    "../../libs/shared/storage/src/**/*.ts",
-    "../../libs/shared/gmail/src/**/*.ts"
+    "../../libs/api/firestore/src/**/*.ts",
+    "../../libs/api/storage/src/**/*.ts",
+    "../../libs/api/gmail/src/**/*.ts"
   ],
   "exclude": [
     "out-tsc",
@@ -27,16 +27,16 @@
   ],
   "references": [
     {
-      "path": "../../libs/shared/storage/tsconfig.lib.json"
+      "path": "../../libs/api/storage/tsconfig.lib.json"
     },
     {
-      "path": "../../libs/shared/firestore/tsconfig.lib.json"
+      "path": "../../libs/api/firestore/tsconfig.lib.json"
     },
     {
-      "path": "../../libs/shared/gmail/tsconfig.lib.json"
+      "path": "../../libs/api/gmail/tsconfig.lib.json"
     },
     {
-      "path": "../../libs/shared/auth/tsconfig.lib.json"
+      "path": "../../libs/api/auth/tsconfig.lib.json"
     }
   ]
 }

@@ -15,8 +15,13 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@djps/api": ["libs/api/src/index.ts"],
-      "@mhc/theme": ["libs/shared/theme/src/index.ts"]
+      "@djps/api": ["../../libs/api/client/src/index.ts"],
+      "@mhc/theme": ["../../libs/ui/theme/src/index.ts"],
+      "@mhc-api/*": ["../../libs/api/*/src/index.ts"],
+      "@mhc-api/auth": ["../../libs/api/auth/src/index.ts"],
+      "@mhc-api/firestore": ["../../libs/api/firestore/src/index.ts"],
+      "@mhc-api/gmail": ["../../libs/api/gmail/src/index.ts"],
+      "@mhc-api/storage": ["../../libs/api/storage/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

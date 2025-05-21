@@ -1,3 +1,5 @@
 packages:
   - 'apps/*'
-  - 'libs/shared/*'
+  - 'libs/*/*'
+  - 'apps/angular'
+  - 'apps/angular/apps/*'
